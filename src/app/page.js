@@ -1,7 +1,6 @@
 "use client";
-import useFetch from "./hooks/useFetch";
-import Labelink from "@/components/labelLink";
-
+import LabelLink from "@/components/LabelLinks";
+import useFetch from "../hooks/useFetch";
 export default function Home() {
   const { data, loading } = useFetch("http://localhost:4000/get-all-xlsx");
   return (
@@ -11,13 +10,18 @@ export default function Home() {
           <h1 className=" text-2xl font-semibold text-center">
             GENERADOR DE CÓDIGO
           </h1>
-          <div className="mt-8">
-            {loading
-              ? "null"
-              : data.map((d) => {
-                  return <Labelink url={"/" + d.id} key={d.id} text={d.id} />;
-                })}
-          </div>
+          {loading
+            ? null
+            : data.map((e) => {
+                return (
+                  <div className="h-16 w-60">
+                    <LabelLink
+                      url={`http://localhost:3000/${e.id}`}
+                      text={e.id}
+                    />
+                  </div>
+                );
+              })}
         </div>
       </div>
     </main>
