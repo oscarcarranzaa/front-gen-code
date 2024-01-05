@@ -26,7 +26,7 @@ export default function Pagination({ totalPages, limit }) {
     } else {
       setNext(false);
     }
-  }, [thisPage]);
+  }, [thisPage, totalPaginates]);
   const disablebtn = "text-gray-200 pointer-events-none";
   const isPrev = prev ? disablebtn : "";
   const isNext = next ? disablebtn : "";

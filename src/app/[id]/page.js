@@ -3,8 +3,8 @@ import { useParams, useSearchParams } from "next/navigation";
 import Pagination from "components/Pagination";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import LabelLink from "@/components/LabelLinks";
 import EditCode from "@/components/EditCode";
+import ItemsCodes from "@/components/ItemsCodes";
 
 export default function Idxlsx() {
   const [data, setData] = useState([]);
@@ -16,6 +16,7 @@ export default function Idxlsx() {
   const Params = useParams();
   const id = Params.id;
   const codeParam = useSearchParams().get("code");
+  const queryCode = `&code=${codeParam}` || "";
   useEffect(() => {
     axios
       .get("http://localhost:4000/get-xlsx?id=" + id + "&page=" + query)
@@ -24,39 +25,42 @@ export default function Idxlsx() {
         setArgs(res.data.data);
         setLoadingCodes(false);
       });
-  }, [query]);
+  }, [id, query]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/one-object?id=" + id + "&code=" + codeParam)
+      .get("http://localhost:4000/one-object?id=" + id + queryCode)
       .then((res) => {
         setCode(res.data);
         setCodeLoad(false);
       });
-  }, [codeParam]);
+  }, [queryCode, id]);
   return (
     <div>
       {loadingCodes ? null : (
         <Pagination totalPages={data.totalItems} limit={10} />
       )}
-      <div className="flex">
-        <div className="flex w-6/12 flex-wrap">
+      <div className="flex m-auto 2xl:max-w-7xl w justify-center p-5">
+        {codeLoad ? null : (
+          <EditCode title={code.Descripcion} code={codeParam} data={code} />
+        )}
+        <div className="ml-5 w-6/12">
           {loadingCodes
             ? null
             : args.map((e) => {
+                const select = e.Codigo === codeParam;
                 return (
-                  <div className="w-96 h-20 mt-3 pr-3" key={e.Codigo}>
-                    <LabelLink
-                      url={`http://localhost:3000/${id}?p=${query}&code=${e.Codigo}`}
+                  <div className="h-14" key={e.Codigo}>
+                    <ItemsCodes
+                      url={`/${id}?p=${query}&code=${e.Codigo}`}
                       text={e.Descripcion}
+                      select={select}
+                      code={e.Codigo}
                     />
                   </div>
                 );
               })}
         </div>
-        {codeLoad ? null : (
-          <EditCode title={code.Descripcion} code={codeParam} data={code} />
-        )}
       </div>
     </div>
   );
