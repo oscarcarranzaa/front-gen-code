@@ -25,7 +25,7 @@ export default function Idxlsx() {
         setArgs(res.data.data);
         setLoadingCodes(false);
       });
-  }, [id, query]);
+  }, [id, query, codeParam]);
 
   useEffect(() => {
     axios
@@ -34,7 +34,17 @@ export default function Idxlsx() {
         setCode(res.data);
         setCodeLoad(false);
       });
-  }, [queryCode, id]);
+  }, [queryCode, id, codeParam]);
+  const nextCode = codeLoad
+    ? null
+    : code.nextCode
+    ? `${Params.id}?p=${code.nextPaginate}&code=${code.nextCode}`
+    : "#";
+  const prevCode = codeLoad
+    ? null
+    : code.prevCode
+    ? `${Params.id}?p=${code.prevPaginate}&code=${code.prevCode}`
+    : "#";
   return (
     <div>
       {loadingCodes ? null : (
@@ -42,7 +52,13 @@ export default function Idxlsx() {
       )}
       <div className="flex m-auto 2xl:max-w-7xl w justify-center p-5">
         {codeLoad ? null : (
-          <EditCode title={code.Descripcion} code={codeParam} data={code} />
+          <EditCode
+            title={code.Descripcion}
+            code={codeParam}
+            data={code}
+            prevCode={prevCode}
+            nextCode={nextCode}
+          />
         )}
         <div className="ml-5 w-6/12">
           {loadingCodes
@@ -56,6 +72,8 @@ export default function Idxlsx() {
                       text={e.Descripcion}
                       select={select}
                       code={e.Codigo}
+                      succes={e.succes}
+                      total={e["(pcs)"]}
                     />
                   </div>
                 );
