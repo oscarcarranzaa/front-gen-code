@@ -32,7 +32,7 @@ export default function Pagination({ totalPages, limit }) {
   const isNext = next ? disablebtn : "";
   return (
     <>
-      <div className="mb-10 mt-5 flex justify-center">
+      <div className="flex justify-center">
         <div className="flex">
           <div
             className={`${

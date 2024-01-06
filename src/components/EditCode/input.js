@@ -2,14 +2,16 @@
 import { useEffect, useState } from "react";
 
 export default function Input({ name, disabled, value, title }) {
-  const [val, setVal] = useState(value || "");
+  const [val, setVal] = useState(value);
+  console.log(value);
   useEffect(() => {
-    setVal(value || "");
+    const valTrim = value !== undefined ? value.trim() : value;
+    setVal(valTrim);
   }, [value]);
   function handleChange(e) {
     setVal(e.target.value);
   }
-  const valTrim = val !== "" ? val.trim() : val;
+  const isTrim = val !== undefined ? val : "";
   return (
     <div className="mt-2">
       <p>{title}</p>
@@ -19,16 +21,16 @@ export default function Input({ name, disabled, value, title }) {
           className=" bg-transparent border-2 border-gray-600 p-2 rounded-md focus:border-sky-600 w-full"
           name={name}
           autoComplete="off"
-          value={valTrim}
+          value={val}
           onChange={handleChange}
           disabled={disabled}
         />
         <p
           className={`${
-            valTrim.length > 25 ? "text-red-500" : "text-white"
+            isTrim.length > 25 ? "text-red-500" : "text-white"
           } text-xs ml-2`}
         >
-          {valTrim.length}
+          {isTrim.length}
         </p>
       </div>
     </div>
