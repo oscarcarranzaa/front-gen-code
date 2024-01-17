@@ -7,21 +7,7 @@ export default function Home() {
     <main>
       <div className="flex justify-center mt-9 flex-nowrap w-full">
         <div className=" w-4/12">
-          <h1 className=" text-2xl font-semibold text-center">
-            GENERADOR DE CÓDIGO
-          </h1>
-          {loading
-            ? null
-            : data.map((e) => {
-                return (
-                  <div className="h-16 w-60">
-                    <LabelLink
-                      url={`http://localhost:3000/${e.id}`}
-                      text={e.id}
-                    />
-                  </div>
-                );
-              })}
+          <h1 className=" text-2xl font-semibold text-center">Home</h1>
         </div>
       </div>
     </main>
